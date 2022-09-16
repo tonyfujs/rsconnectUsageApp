@@ -40,6 +40,29 @@ dta_bd %>% pin_write(some_content, name = "some_content", type = "rds")
 
 glimpse(usage_shiny)
 
+# saving data for future use ----------------------------------------------
+library(synthpop)
+library(stringi)
+
+usg_dta <- get_usage_dta("list")
+usg_dta$users$email <- 
+  usg_dta$users$email %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+usg_dta$users$username <- 
+  usg_dta$users$username %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+usg_dta$users$first_name <- 
+  usg_dta$users$first_name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+usg_dta$users$last_name <- 
+  usg_dta$users$last_name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+
+usg_dta$groups$name <- 
+  usg_dta$groups$name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+
+usg_dta$users %>% glimpse()
+usg_dta$usage_shiny %>% glimpse()
+usg_dta$groups %>% glimpse()
+
+usethis::use_data(usg_dta, overwrite = TRUE)
+
 # 
 # 
 # usage_shiny %>% 
