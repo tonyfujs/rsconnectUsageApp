@@ -1,0 +1,8 @@
+file: users.rds
+file_size: 30119
+pin_hash: 4d46220f5acfbd2a
+type: rds
+title: 'users: a pinned 516 x 11 data frame'
+description: ~
+created: 20220916T211937Z
+api_version: 1.0

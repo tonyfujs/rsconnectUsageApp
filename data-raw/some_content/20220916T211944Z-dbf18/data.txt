@@ -1,0 +1,8 @@
+file: some_content.rds
+file_size: 25742
+pin_hash: dbf183824edc3273
+type: rds
+title: 'some_content: a pinned 232 x 32 data frame'
+description: ~
+created: 20220916T211944Z
+api_version: 1.0

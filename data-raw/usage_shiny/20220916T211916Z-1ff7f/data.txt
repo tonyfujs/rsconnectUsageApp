@@ -1,0 +1,8 @@
+file: usage_shiny.rds
+file_size: 12740
+pin_hash: 1ff7facf71a6e624
+type: rds
+title: 'usage_shiny: a pinned 1377 x 5 data frame'
+description: ~
+created: 20220916T211916Z
+api_version: 1.0

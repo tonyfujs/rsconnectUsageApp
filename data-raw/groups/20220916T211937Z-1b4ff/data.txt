@@ -1,0 +1,8 @@
+file: groups.rds
+file_size: 718
+pin_hash: 1b4ffaa7b7718dbb
+type: rds
+title: 'groups: a pinned 15 x 3 data frame'
+description: ~
+created: 20220916T211937Z
+api_version: 1.0
