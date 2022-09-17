@@ -4,3 +4,7 @@
 dev_history.R
 ^dev$
 $run_dev.*
+_\.new\.png$
+^app\.R$
+^rsconnect$
+^LICENSE\.md$
