@@ -1,25 +1,57 @@
+# Exploring usage data
 
 
-# Exploring useage data
-
+# Setups
 library(ggplot2)
 library(dplyr)
 library(connectapi)
 library(stringr)
-
 library(shiny)
 library(pins)
 library(forcats)
+library(purrr)
 
-# Setups 
+ 
 golem::document_and_reload()
 pkgload::load_all()
 
+# Cleaning functions -------------------------
+users_clean(usg_dta$users)
+usage_users_clean(usg_dta$usage_shiny, usg_dta$users)
 
-# Reading pins 
-dta <- get_usage_dta("list")
+# filter users ----------------------------------
+pkgload::load_all()
+test_mod_users_filter()
 
-users_exclude <- dta$users %>% users_clean() %>% slice(1:3)
+# Reading data
+
+dta$usage_shiny %>% 
+  filter(!user_guid %in% c())
+
+
+all_users <- usge_users_clean(dta$usage_shiny, dta$users)
+
+users_all <- set_names(x = all_users$user_guid, nm = all_users$user_name)
+
+
+
+users_id <- dta$users %>% users_clean()
+
+
+
+usage_raw <- dta$usage_shiny 
+users_raw <- dta$users
+
+
+
+
+# Exclude users
+users_all_dta <- dta$users %>% users_clean()
+
+users_all <- set_names(x = users_all_dta$user_guid, nm = users_all_dta$user_name)
+exclude <- all_users[1:3]
+
+users_exclude <- users_all[!users_all %in% exclude]
 
 usage_agg_stats <- function(dta) {
   dta %>% 
