@@ -1,7 +1,8 @@
 
 #' Clean users names
 #' 
-#' @importFrom dplyr mutate select arrange
+#' @importFrom dplyr mutate select arrange bind_rows
+#' @importFrom tibble tibble
 #' @importFrom stringr str_c str_detect
 #' @importFrom forcats as_factor
 #' @importFrom magrittr %>%
@@ -13,7 +14,7 @@ users_clean <- function(dta) {
       user_name = stringr::str_c(last_name, ", ", first_name)
     ) %>% 
     dplyr::select(user_name, user_email = email, user_guid = guid) %>% 
-    bind_rows(tibble(user_name = "External users", user_email = NA, user_guid = NA)) %>% 
+    dplyr::bind_rows(tibble::tibble(user_name = "External users", user_email = NA, user_guid = NA)) %>% 
     dplyr::arrange(
       desc(stringr::str_detect(
         user_name,
@@ -63,6 +64,7 @@ usage_users_clean <- function(usage_raw, users_raw) {
     dplyr::count(user_guid) %>% 
     dplyr::left_join(users_raw %>% users_clean(), by = "user_guid") %>% 
     mutate(user_name = as.character(user_name),
+           # user_guid = ifelse(is.na(user_name),NA_character_, user_name)
            user_name = ifelse(is.na(user_name), "External users", user_name)) %>% 
     arrange(
       desc(n),

@@ -75,7 +75,7 @@ plot_usage_by_period <- function(dta, period = "month", fill = user_name) {
   
   usg_agg <- agg_clean_usage(dta, period)
   
-  unique_apps <- usage_clean_agg$content_title %>% unique()
+  unique_apps <- usg_agg$content_title %>% unique()
   unique_apps_msg <- str_c("Usage of ", length(unique_apps), " apps is aggregated under each bar.")
   
   usage_clean_summ <-

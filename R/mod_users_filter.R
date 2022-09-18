@@ -7,24 +7,38 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
+#' @importFrom shinyWidgets pickerInput
 mod_users_filter_ui <- function(id){
   ns <- NS(id)
   tagList(
-    shiny::selectizeInput(
+    shinyWidgets::pickerInput(
       inputId = ns("users_exclude"), 
-      label = "Users to exclude", 
+      label = "Users to exclude",  
       choices = NULL,
       selected = NULL,
       multiple = TRUE,
-      size = 10,
+      options = list(`actions-box` = TRUE,
+                     `live-search` = TRUE),
       width = "100%"
-      )
+    )
+    # ,
+    # shiny::selectizeInput(
+    #   inputId = ns("users_exclude"), 
+    #   label = "Users to exclude", 
+    #   choices = NULL,
+    #   selected = NULL,
+    #   multiple = TRUE,
+    #   size = 10,
+    #   width = "100%"
+    #   )
     )
 }
     
 #' users_filter Server Functions
 #'
 #' @importFrom purrr set_names
+#' @importFrom stringr str_detect regex
+#' @importFrom shinyWidgets updatePickerInput
 #' @noRd 
 mod_users_filter_server <- function(id, usage_raw, users_raw){
   moduleServer( id, function(input, output, session){
@@ -44,19 +58,42 @@ mod_users_filter_server <- function(id, usage_raw, users_raw){
           purrr::set_names(x = all_users()$user_guid, 
                            nm = all_users()$user_name)
         
-        shiny::updateSelectizeInput(
+        inputs_to_restore <- input$users_exclude
+        
+        if (isTruthy(inputs_to_restore)) {
+          inputs_to_restore <-
+            inputs_to_restore[inputs_to_restore %in% local_choices]
+        } else {
+          inputs_to_restore <- local_choices[
+            !stringr::str_detect(names(local_choices), 
+                                 stringr::regex("external", ignore_case = T))
+          ]
+        }
+        
+        # shiny::updateSelectizeInput(
+        #   inputId = "users_exclude",  
+        #   choices = local_choices,
+        #   selected = inputs_to_restore
+        # )
+        
+        shinyWidgets::updatePickerInput(
+          session = session,
           inputId = "users_exclude",  
           choices = local_choices,
-          selected = local_choices[2:4]
+          selected = inputs_to_restore
         )
       
     }, ignoreNULL = TRUE, ignoreInit = FALSE)
     
     reactive({
       req(usage_raw())
-      # req(input$users_exclude)
-      usage_raw() %>% filter(!user_guid %in% input$users_exclude)
       
+      if (any(input$users_exclude == "NA")) {
+        usage_raw() %>%
+          dplyr::filter(!user_guid %in% input$users_exclude, !is.na(user_guid))
+      } else {
+        usage_raw() %>% dplyr::filter(!user_guid %in% input$users_exclude)
+      }
     })
   })
 }

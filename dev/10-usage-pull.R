@@ -26,15 +26,6 @@ usage_shiny <- get_usage_shiny(client, limit = Inf)
 usage_static <- get_usage_static(client, limit = Inf)
 some_content <- get_content(client)
 
-# saving data
-dta_bd <- board_folder("data-raw", versioned = FALSE)
-
-dta_bd %>% pin_write(usage_shiny, name = "usage_shiny", type = "rds")
-dta_bd %>% pin_write(usage_static, name = "usage_static", type = "rds")
-dta_bd %>% pin_write(users, name = "users", type = "rds")
-dta_bd %>% pin_write(groups, name = "groups", type = "rds")
-dta_bd %>% pin_write(some_content, name = "some_content", type = "rds")
-
 # Glimpse at the data.
 glimpse(usage_shiny)
 
@@ -48,7 +39,25 @@ usage_shiny2 <- get_usage_shiny(client, limit = Inf)
 usage_static2 <- get_usage_static(client, limit = Inf)
 some_content2 <- get_content(client)
 
-# # saving data for use in the package ----------------------------------------------
+
+
+# saving data
+dta_bd <- board_folder("data-raw", versioned = FALSE)
+
+dta_bd %>% pin_write(bind_rows(usage_shiny, usage_shiny2), name = "usage_shiny", type = "rds")
+dta_bd %>% pin_write(usage_static, name = "usage_static", type = "rds")
+dta_bd %>% pin_write(
+  users %>% 
+    filter(!guid  %in% users2$guid ) %>% 
+    bind_rows(users2), name = "users", type = "rds")
+dta_bd %>% pin_write(groups, name = "groups", type = "rds")
+dta_bd %>% pin_write(
+  some_content %>% 
+    filter(!guid %in% some_content2$guid) %>% 
+    bind_rows(some_content2), name = "some_content", type = "rds")
+
+
+# # saving data for use in the package ---------------------------------------------
 # 
 # library(synthpop)
 # library(stringi)

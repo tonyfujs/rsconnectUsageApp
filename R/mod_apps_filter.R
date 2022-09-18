@@ -17,7 +17,8 @@ mod_apps_filter_ui <- function(id){
       choices = NULL,
       selected = NULL,
       multiple = TRUE,
-      options = list(`actions-box` = TRUE),
+      options = list(`actions-box` = TRUE,
+                     `live-search` = TRUE),
       width = "100%"
       )
     )
@@ -27,6 +28,7 @@ mod_apps_filter_ui <- function(id){
 #'
 #' @importFrom purrr set_names
 #' @importFrom shinyWidgets updatePickerInput
+#' @importFrom dplyr distinct arrange filter
 #' @noRd 
 mod_apps_filter_server <-
   function(id,
@@ -42,8 +44,8 @@ mod_apps_filter_server <-
       req(users_raw())
       req(content_raw())
       usage_clean(usage_raw(), users_raw(), content_raw()) %>% 
-        distinct(content_guid, content_title) %>% 
-        arrange(content_title)
+        dplyr::distinct(content_guid, content_title) %>% 
+        dplyr::arrange(content_title)
     })
     
     observeEvent(#
@@ -53,7 +55,7 @@ mod_apps_filter_server <-
         local_choices <- 
           purrr::set_names(x = all_content()$content_guid, 
                            nm = all_content()$content_title)
-        inputs_to_restore <- input$users_exclude
+        inputs_to_restore <- input$apps_include
         
         if (isTruthy(inputs_to_restore)) {
           inputs_to_restore <-
@@ -74,7 +76,7 @@ mod_apps_filter_server <-
     reactive({
       req(usage_raw())
       if (isTruthy(input$apps_include)) {
-        usage_raw() %>% filter(content_guid %in% input$apps_include)
+        usage_raw() %>% dplyr::filter(content_guid %in% input$apps_include)
       } else {
         usage_raw()
       }

@@ -58,8 +58,8 @@ mod_plot_usage_server2 <- function(id, usg_clean = reactive(NULL)) {
     
     moduleServer(id, function(input, output, session){
       ns <- session$ns
-      esquisse::render_ggplot("usg_period", {plot_usage_by_period(usg_clean())})
-      esquisse::render_ggplot("usg_app", {plot_usage_by_app(usg_clean())})
+      esquisse::render_ggplot("usg_period", {req(plot_usage_by_period(usg_clean()))})
+      esquisse::render_ggplot("usg_app", {req(plot_usage_by_app(usg_clean()))})
     })
   }
     
@@ -81,7 +81,28 @@ test_plot_usage <- function(id = NULL) {
       id = id,
       reactive(rsconnectUsageApp::usg_dta$usage_shiny), 
       reactive(rsconnectUsageApp::usg_dta$users)
-      )
+    )
+    mod_plot_usage_server(id = id, usage_raw = noid_tbl)
+  }
+  
+  shinyApp(ui, server)
+}
+
+
+#' test plot usage app with filters
+test_usage_full <- function(id = NULL) {
+  ui <- shiny::fluidPage(
+    mod_users_filter_ui(id = id),
+    mod_plot_usage_ui(id = id)
+  )
+  
+  server <- function(input, output, session) {
+    noid_tbl <- mod_users_filter_server(
+      id = id,
+      reactive(rsconnectUsageApp::usg_dta$usage_shiny), 
+      reactive(rsconnectUsageApp::usg_dta$users)
+    )
+    
     mod_plot_usage_server(id = id, usage_raw = noid_tbl)
   }
   

@@ -15,11 +15,16 @@ library(purrr)
 golem::document_and_reload()
 pkgload::load_all()
 
+
+usg_dta2 <- get_usage_dta("list")
+
 # Cleaning functions -------------------------
-users_clean(usg_dta$users)
-content_clean(usg_dta$content)
-usage_users_clean(usg_dta$usage_shiny, usg_dta$users)
-usage_clean(usg_dta$usage_shiny, usg_dta$users, usg_dta$content)
+users_clean(usg_dta2$users) 
+content_clean(usg_dta2$content)
+usage_users_clean(usg_dta2$usage_shiny, usg_dta2$users) 
+usage_clean(usg_dta2$usage_shiny, usg_dta2$users, usg_dta2$content)
+
+
 
 # # filter users ----------------------------------
 # pkgload::load_all()
