@@ -20,25 +20,37 @@ agg_clean_usage <- function(usage_clean, unit = "month") {
 #' 
 #' @export
 agg_app_usage <- function(usage_clean, ...) {
-  usage_clean %>% 
-    group_by(content_title) %>% 
+  usage_clean %>%
+    group_by(content_title) %>%
     dplyr::summarise(duration = sum(duration),
-                     connections = dplyr::n()) %>% 
-    dplyr::ungroup() %>% 
+                     connections = dplyr::n()) %>%
+    dplyr::ungroup() %>%
     bind_rows(
       dplyr::summarise(
-        ., 
+        .,
         duration = sum(duration),
-        connections = sum(connections)) %>% 
+        connections = sum(connections)
+      ) %>%
         mutate(content_title = "TOTAL of selected apps")
-    ) %>% 
-    mutate(content_title = 
-             forcats::as_factor(content_title) %>% 
-             forcats::fct_reorder(duration) %>% 
-             forcats::fct_rev()) %>% 
-    arrange(content_title) %>% 
-    mutate(Usage = lubridate::seconds_to_period(duration) %>% as.character()) %>% 
-    select(App = content_title, Usage, Connections = connections)
+    ) %>%
+    mutate(
+      content_title =
+        forcats::as_factor(content_title) %>%
+        forcats::fct_reorder(duration) %>%
+        forcats::fct_rev(),
+      `Session duration` = round(duration / connections)
+    ) %>%
+    arrange(content_title) %>%
+    mutate(
+      Usage = lubridate::seconds_to_period(duration) %>% as.character(),
+      `Session duration` =
+        lubridate::seconds_to_period(`Session duration`) %>%
+        as.character()
+    ) %>%
+    select(App = content_title,
+           Usage,
+           Connections = connections,
+           `Session duration`)
 }
 
 
