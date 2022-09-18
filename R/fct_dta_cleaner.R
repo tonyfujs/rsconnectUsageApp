@@ -13,14 +13,41 @@ users_clean <- function(dta) {
       user_name = stringr::str_c(last_name, ", ", first_name)
     ) %>% 
     dplyr::select(user_name, user_email = email, user_guid = guid) %>% 
+    bind_rows(tibble(user_name = "External users", user_email = NA, user_guid = NA)) %>% 
     dplyr::arrange(
       desc(stringr::str_detect(
         user_name,
-        stringr::regex("taka|bukin|inchaus|fujs", ignore_case = T)
+        stringr::regex("taka|bukin|inchaus|fujs|External", ignore_case = T)
       )), 
       user_name) %>% 
     dplyr::mutate(user_name = forcats::as_factor(user_name))
   
+}
+
+#' Clean content data
+#' 
+#' @importFrom dplyr mutate select arrange
+#' 
+#' @export
+content_clean <- function(dta) {
+  dta %>% 
+    mutate(content_title = ifelse(is.na(title), name, title)) %>% 
+    select(content_guid = guid, content_title)
+  
+}
+
+
+
+#' Clean usage data
+#' 
+#' 
+#' @export
+usage_clean <- function(usage_raw, users_raw, content_raw) {
+  usage_raw %>% 
+    dplyr::left_join(users_clean(users_raw), by = "user_guid") %>% 
+    dplyr::left_join(content_clean(content_raw), by = "content_guid") %>% 
+    dplyr::mutate(duration = ended - started) %>% 
+    dplyr::filter(!is.na(duration))
 }
 
 

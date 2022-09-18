@@ -24,6 +24,7 @@ mod_users_filter_ui <- function(id){
     
 #' users_filter Server Functions
 #'
+#' @importFrom purrr set_names
 #' @noRd 
 mod_users_filter_server <- function(id, usage_raw, users_raw){
   moduleServer( id, function(input, output, session){
@@ -40,8 +41,8 @@ mod_users_filter_server <- function(id, usage_raw, users_raw){
         req(all_users())
         
         local_choices <- 
-          set_names(x = all_users()$user_guid, 
-                    nm = all_users()$user_name)
+          purrr::set_names(x = all_users()$user_guid, 
+                           nm = all_users()$user_name)
         
         shiny::updateSelectizeInput(
           inputId = "users_exclude",  
