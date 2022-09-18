@@ -15,15 +15,15 @@ get_usage_dta <- function(type = "reactive", ...) {
     reactiveValues(
       usage_shiny = pins::pin_reactive_read(dta_bd, "usage_shiny"),
       users = pins::pin_reactive_read(dta_bd, "users"),
-      groups = pins::pin_reactive_read(dta_bd, "groups")#,
-      # some_content = pins::pin_reactive_read(dta_bd, "some_content")
+      groups = pins::pin_reactive_read(dta_bd, "groups"),
+      content = pins::pin_reactive_read(dta_bd, "some_content")
     )
   } else {
     list(
       usage_shiny = pins::pin_read(dta_bd, "usage_shiny"),
       users = pins::pin_read(dta_bd, "users"),
-      groups = pins::pin_read(dta_bd, "groups")#,
-      # some_content = pins::pin_reactive_read(dta_bd, "some_content")
+      groups = pins::pin_read(dta_bd, "groups"),
+      content = pins::pin_read(dta_bd, "some_content")
     )
   }
 }

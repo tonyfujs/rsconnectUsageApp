@@ -57,9 +57,19 @@ usg_dta$users$last_name <-
 usg_dta$groups$name <- 
   usg_dta$groups$name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
 
+
+usg_dta$content$content_url <- 
+  usg_dta$content$content_url %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+usg_dta$content$dashboard_url <- 
+  usg_dta$content$dashboard_url %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+usg_dta$content <- 
+  usg_dta$content %>% 
+  select(-owner)
+
 usg_dta$users %>% glimpse()
 usg_dta$usage_shiny %>% glimpse()
 usg_dta$groups %>% glimpse()
+usg_dta$content %>% glimpse()
 
 usethis::use_data(usg_dta, overwrite = TRUE)
 
