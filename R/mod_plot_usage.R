@@ -12,8 +12,8 @@
 mod_plot_usage_ui <- function(id){
   ns <- NS(id)
   tagList(
-    esquisse::ggplot_output(ns("usg_period"), height = "500px"),
-    esquisse::ggplot_output(ns("usg_app"), height = "500px")
+    esquisse::ggplot_output(ns("usg_period"), height = "400px"),
+    esquisse::ggplot_output(ns("usg_app"), height = "400px")
     
     # shiny::plotOutput(ns("usg_period")),
     # shiny::plotOutput(ns("usg_app"))
@@ -32,24 +32,36 @@ mod_plot_usage_server <-
            users_raw = reactive(rsconnectUsageApp::usg_dta$users), 
            content_raw = reactive(rsconnectUsageApp::usg_dta$content)) {
     
-  moduleServer(id, function(input, output, session){
-    ns <- session$ns
-    usg_clean <- 
-      reactive({usage_clean(req(usage_raw()), users_raw(), content_raw())}) %>% 
-      debounce(750)
-    
-    esquisse::render_ggplot("usg_period", {
-      plot_usage_by_period(usg_clean())
+    moduleServer(id, function(input, output, session){
+      ns <- session$ns
+      usg_clean <- 
+        reactive({usage_clean(req(usage_raw()), users_raw(), content_raw())}) %>% 
+        debounce(750)
+      
+      esquisse::render_ggplot("usg_period", {
+        plot_usage_by_period(usg_clean())
+      })
+      
+      esquisse::render_ggplot("usg_app", {
+        plot_usage_by_app(usg_clean())
+      })
+      #   
+      # output$usg_period <- renderPlot({plot_usage_by_period(usg_clean())})
+      # output$usg_app <- renderPlot({plot_usage_by_app(usg_clean())})
     })
+  }
+
+#' mod_plot_usage_server Server Functions2
+#'
+#' @export
+mod_plot_usage_server2 <- function(id, usg_clean = reactive(NULL)) {
     
-    esquisse::render_ggplot("usg_app", {
-      plot_usage_by_app(usg_clean())
+    moduleServer(id, function(input, output, session){
+      ns <- session$ns
+      esquisse::render_ggplot("usg_period", {plot_usage_by_period(usg_clean())})
+      esquisse::render_ggplot("usg_app", {plot_usage_by_app(usg_clean())})
     })
-    #   
-    # output$usg_period <- renderPlot({plot_usage_by_period(usg_clean())})
-    # output$usg_app <- renderPlot({plot_usage_by_app(usg_clean())})
-  })
-}
+  }
     
 ## To be copied in the UI
 # mod_plot_usage_ui("plot_usage_1")
