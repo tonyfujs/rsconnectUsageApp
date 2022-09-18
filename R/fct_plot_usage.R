@@ -25,12 +25,19 @@ agg_app_usage <- function(usage_clean, ...) {
     dplyr::summarise(duration = sum(duration),
                      connections = dplyr::n()) %>% 
     dplyr::ungroup() %>% 
+    bind_rows(
+      dplyr::summarise(
+        ., 
+        duration = sum(duration),
+        connections = sum(connections)) %>% 
+        mutate(content_title = "TOTAL of selected apps")
+    ) %>% 
     mutate(content_title = 
              forcats::as_factor(content_title) %>% 
              forcats::fct_reorder(duration) %>% 
              forcats::fct_rev()) %>% 
     arrange(content_title) %>% 
-    mutate(Usage = lubridate::seconds_to_period(duration)) %>% 
+    mutate(Usage = lubridate::seconds_to_period(duration) %>% as.character()) %>% 
     select(App = content_title, Usage, Connections = connections)
 }
 
