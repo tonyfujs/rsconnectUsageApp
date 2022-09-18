@@ -44,7 +44,17 @@ agg_app_usage(usage_clean)
 
 pkgload::load_all()
 test_plot_usage()
+
+content_choices <-
+  usage_clean(usg_dta$usage_shiny, usg_dta$users, usg_dta$content) %>% 
+  distinct(content_guid, content_title) %>% 
+  arrange(content_title)
   
+
+# Run filter apps app ---------------------------------
+
+pkgload::load_all()
+test_mod_apps_filter("IDD")
 
 
 # pickerInput(

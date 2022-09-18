@@ -10,7 +10,10 @@
 mod_usage_table_ui <- function(id){
   ns <- NS(id)
   tagList(
-    DT::DTOutput(ns("total_usage"))
+    div(
+      DT::DTOutput(ns("total_usage")),
+      style = "zoom:0.6"
+    )
   )
 }
     

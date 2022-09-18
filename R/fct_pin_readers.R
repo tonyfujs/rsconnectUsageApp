@@ -1,15 +1,15 @@
 #' Returns folder board
 #' @importFrom pins board_folder
-get_board_folder <- function() {
+get_board_folder <- function(folder = "data-raw") {
   pins::board_folder("data-raw")
 }
 
 #' Returns list with usage data previously saved
 #' @importFrom shiny reactiveValues
 #' @importFrom pins pin_reactive_read
-get_usage_dta <- function(type = "reactive", ...) {
+get_usage_dta <- function(type = "reactive", folder = "data-raw", ...) {
   
-  dta_bd <- get_board_folder()
+  dta_bd <- get_board_folder(folder)
   
   if (type == "reactive") {
     reactiveValues(

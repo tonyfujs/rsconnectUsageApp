@@ -8,7 +8,17 @@ app_ui <- function(request) {
   tagList(
     golem_add_external_resources(),
     fluidPage(
-      h1("rsconnectUsageApp")
+      h4("Usage summary of the shiny apps deployed by Eduard Bukin to: https://datanalytics.worldbank.org/ and http://w0lxprconn01.worldbank.org:3939/connect/"),
+      column(
+        3, 
+        mod_apps_filter_ui(NULL),
+        mod_users_filter_ui(NULL),
+        mod_usage_table_ui(NULL)
+      ),
+      column(
+        9, 
+        mod_plot_usage_ui(NULL)
+      )
     )
   )
 }

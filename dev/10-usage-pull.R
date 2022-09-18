@@ -35,62 +35,51 @@ dta_bd %>% pin_write(users, name = "users", type = "rds")
 dta_bd %>% pin_write(groups, name = "groups", type = "rds")
 dta_bd %>% pin_write(some_content, name = "some_content", type = "rds")
 
-
 # Glimpse at the data.
-
 glimpse(usage_shiny)
 
-# saving data for future use ----------------------------------------------
-library(synthpop)
-library(stringi)
+# Combing data for use in the app -----------------------------------------------
 
-usg_dta <- get_usage_dta("list")
-usg_dta$users$email <- 
-  usg_dta$users$email %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-usg_dta$users$username <- 
-  usg_dta$users$username %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-usg_dta$users$first_name <- 
-  usg_dta$users$first_name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-usg_dta$users$last_name <- 
-  usg_dta$users$last_name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+client <- connect(prefix = "WBINTERNAL")
 
-usg_dta$groups$name <- 
-  usg_dta$groups$name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+users2 <- get_users(client, limit = Inf)
+groups2 <- get_groups(client, limit = Inf)
+usage_shiny2 <- get_usage_shiny(client, limit = Inf)
+usage_static2 <- get_usage_static(client, limit = Inf)
+some_content2 <- get_content(client)
 
-
-usg_dta$content$content_url <- 
-  usg_dta$content$content_url %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-usg_dta$content$dashboard_url <- 
-  usg_dta$content$dashboard_url %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-usg_dta$content <- 
-  usg_dta$content %>% 
-  select(-owner)
-
-usg_dta$users %>% glimpse()
-usg_dta$usage_shiny %>% glimpse()
-usg_dta$groups %>% glimpse()
-usg_dta$content %>% glimpse()
-
-usethis::use_data(usg_dta, overwrite = TRUE)
-
+# # saving data for use in the package ----------------------------------------------
+# 
+# library(synthpop)
+# library(stringi)
+# 
+# usg_dta <- get_usage_dta("list")
+# usg_dta$users$email <- 
+#   usg_dta$users$email %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+# usg_dta$users$username <- 
+#   usg_dta$users$username %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+# usg_dta$users$first_name <- 
+#   usg_dta$users$first_name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+# usg_dta$users$last_name <- 
+#   usg_dta$users$last_name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+# 
+# usg_dta$groups$name <- 
+#   usg_dta$groups$name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
 # 
 # 
-# usage_shiny %>% 
-#   filter(is.na(user_guid)) %>%
-#   group_by(content_guid) %>% 
-#   summarise(across(c(session_duration), ~ sum(.)),
-#             connections = n()) %>% 
-#   # left_join(my_apps) %>% 
-#   ggplot() + aes(y = titel, x = connections) +
-#   geom_bar(stat = "identity")
+# usg_dta$content$content_url <- 
+#   usg_dta$content$content_url %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+# usg_dta$content$dashboard_url <- 
+#   usg_dta$content$dashboard_url %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+# usg_dta$content <- 
+#   usg_dta$content %>% 
+#   select(-owner)
 # 
+# usg_dta$users %>% glimpse()
+# usg_dta$usage_shiny %>% glimpse()
+# usg_dta$groups %>% glimpse()
+# usg_dta$content %>% glimpse()
 # 
-# shiny_rsc %>% 
-#   filter(user_guid != me | is.na(user_guid)) %>%
-#   group_by(content_guid) %>% 
-#   summarise(across(c(session_duration), ~ sum(.)),
-#             connections = n()) %>% 
-#   left_join(my_apps) %>% 
-#   ggplot() + aes(y = titel, x = session_duration / 3600 / 24) +
-#   geom_bar(stat = "identity")
+# usethis::use_data(usg_dta, overwrite = TRUE)
+
   
