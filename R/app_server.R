@@ -4,28 +4,30 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @noRd
-app_server <- function(input, output, session) {
+app_server <- function(input, output, session, dta = NULL) {
   
-  dta <- get_usage_dta("reactive", folder = "data-raw")
+  if (is.null(dta)) {
+    dta <- get_usage_dta("list", folder = "data-raw")
+  }
   
   usage_raw_1 <- 
     mod_users_filter_server(
       id = NULL,
-      usage_raw = dta$usage_shiny,
-      users_raw = dta$users
+      usage_raw = reactive(dta$usage_shiny),
+      users_raw = reactive(dta$users)
     )
   
   usage_raw <- 
     mod_apps_filter_server(
       id = NULL,
       usage_raw = usage_raw_1, 
-      users_raw = dta$users, 
-      content_raw = dta$content
+      users_raw = reactive(dta$users), 
+      content_raw = reactive(dta$content)
     )
   
   usg_clean <-
     reactive({
-      usage_clean(req(usage_raw()), dta$users(), dta$content())
+      usage_clean(req(usage_raw()), dta$users, dta$content)
     }) %>%
     debounce(750)
   

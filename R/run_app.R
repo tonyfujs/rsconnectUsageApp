@@ -8,16 +8,21 @@
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
 run_app <- function(
+  dta = NULL,
   onStart = NULL,
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
   ...
 ) {
+  app_server_local <- function(input, output, session) {
+    app_server(input, output, session, dta = dta)
+  }
+    
   with_golem_options(
     app = shinyApp(
       ui = app_ui,
-      server = app_server,
+      server = app_server_local,
       onStart = onStart,
       options = options,
       enableBookmarking = enableBookmarking,

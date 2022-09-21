@@ -8,7 +8,7 @@ app_ui <- function(request) {
   tagList(
     golem_add_external_resources(),
     fluidPage(
-      h4("Usage summary of Shiny apps deployed by Eduard Bukin to: datanalytics.worldbank.org and w0lxprconn01.worldbank.org"),
+      h4("Usage summary of Shiny apps deployed by ____ to: _____"),
       column(
         3, 
         mod_apps_filter_ui(NULL),

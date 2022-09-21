@@ -1,6 +1,6 @@
 Package: rsconnectUsageApp
 Title: App for monitoring apps usage on R Studio Connect server
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R: person('Eduard', 'Bukin', email = 'edwardbukin@gmail.com', role = c('cre', 'aut'))
 Description: Does data collection and monitorring.
 License: MIT + file LICENSE

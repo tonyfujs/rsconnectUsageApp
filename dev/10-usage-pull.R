@@ -62,26 +62,32 @@ dta_bd %>% pin_write(
 # library(synthpop)
 # library(stringi)
 # 
-# usg_dta <- get_usage_dta("list")
-# usg_dta$users$email <- 
+# usg_dta <- rsconnectUsageApp::usg_dta# get_usage_dta("list")
+# usg_dta$users$email <-
 #   usg_dta$users$email %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-# usg_dta$users$username <- 
+# usg_dta$users$username <-
 #   usg_dta$users$username %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-# usg_dta$users$first_name <- 
+# usg_dta$users$first_name <-
 #   usg_dta$users$first_name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-# usg_dta$users$last_name <- 
+# usg_dta$users$last_name <-
 #   usg_dta$users$last_name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
 # 
-# usg_dta$groups$name <- 
+# usg_dta$groups$name <-
 #   usg_dta$groups$name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
 # 
 # 
-# usg_dta$content$content_url <- 
+# usg_dta$content$content_url <-
 #   usg_dta$content$content_url %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-# usg_dta$content$dashboard_url <- 
+# usg_dta$content$dashboard_url <-
 #   usg_dta$content$dashboard_url %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
-# usg_dta$content <- 
-#   usg_dta$content %>% 
+# usg_dta$content$name <-
+#   usg_dta$content$name %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+# usg_dta$content$title <-
+#   usg_dta$content$title %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+# usg_dta$content$description <-
+#   usg_dta$content$description %>% map_chr(~{stringi::stri_rand_strings(1, length = nchar(.x))  })
+# usg_dta$content <-
+#   usg_dta$content %>%
 #   select(-owner)
 # 
 # usg_dta$users %>% glimpse()

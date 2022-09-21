@@ -8,7 +8,7 @@ get_board_folder <- function(folder = "data-raw") {
 #' @importFrom shiny reactiveValues
 #' @importFrom pins pin_reactive_read
 #' @export
-get_usage_dta <- function(type = "reactive", folder = "data-raw", ...) {
+get_usage_dta <- function(type = "list", folder = "data-raw", ...) {
   
   dta_bd <- get_board_folder(folder)
   
