@@ -3,8 +3,9 @@
 
 # rsconnectUsageApp
 
-Is an R package with the functions needed for visualizing usage of the
-shiny apps on the RStudio connect server.
+The goal of rsconnectUsageApp is to aid shiny apps' usage monitoring on the RStudio connect server.
+
+It visualizes pre-defined usage data that is pulled form the RStudio connect server through the API.
 
 <!-- badges: start -->
 
@@ -12,7 +13,6 @@ shiny apps on the RStudio connect server.
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-## Installation
 
 You can install the development version of rsconnectUsageApp from
 [GitHub](https://github.com/wbPTI/rsconnectUsageApp) with:
